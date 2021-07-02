@@ -1,4 +1,4 @@
-package br.com.compartilhaai.model;
+package br.com.compartilhai.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

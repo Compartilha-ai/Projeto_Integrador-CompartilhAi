@@ -1,12 +1,12 @@
-package br.com.compartilhaai;
+package br.com.compartilhai;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CompartilhaaiApplication {
+public class CompartilhaiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CompartilhaaiApplication.class, args);
+		SpringApplication.run(CompartilhaiApplication.class, args);
 	}
 }

@@ -15,28 +15,29 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "tb_categoria")
-public class Categoria {
+@Table(name = "tb_usuario")
+public class Usuario {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@NotNull
-	@Size(max = 255)
-	private String nome;
+	@Size(min=10, max=255)
+	private String nomeCompleto;
 	
 	@NotNull
-	@Size(min = 10, max = 255)
-	private String descricao;
+	@Size (max=255)
+	private String email;
 	
 	@NotNull
-	@Size(max = 255)
-	private String palavraChave;
+	@Size (min= 8, max=255)
+	private String senha;
 	
-	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("categoria")
-	private List<Produto> produto;
+	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("usuario")
+	private List<Produto>produto;
 
 	public long getId() {
 		return id;
@@ -46,30 +47,30 @@ public class Categoria {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeCompleto() {
+		return nomeCompleto;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getPalavraChave() {
-		return palavraChave;
+	public String getSenha() {
+		return senha;
 	}
 
-	public void setPalavraChave(String palavraChave) {
-		this.palavraChave = palavraChave;
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
-
+	
 	public List<Produto> getProduto() {
 		return produto;
 	}
@@ -78,4 +79,6 @@ public class Categoria {
 		this.produto = produto;
 	}
 	
+	
+
 }

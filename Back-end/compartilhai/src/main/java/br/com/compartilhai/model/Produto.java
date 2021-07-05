@@ -1,29 +1,27 @@
 package br.com.compartilhai.model;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "tb_categoria")
-public class Categoria {
-	
+@Table(name = "tb_produto")
+public class Produto {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@NotNull
-	@Size(min = 5, max = 255)
+	@Size(max = 255)
 	private String nome;
 	
 	@NotNull
@@ -31,12 +29,16 @@ public class Categoria {
 	private String descricao;
 	
 	@NotNull
-	@Size(max = 255)
-	private String palavraChave;
+	@Positive
+	private double preco;
 	
-	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("categoria")
-	private List<Produto> produto;
+	@NotNull
+	@Size(min = 5, max = 255)
+	private String multimidia;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("produto")
+	private Categoria categoria;
 
 	public long getId() {
 		return id;
@@ -62,20 +64,28 @@ public class Categoria {
 		this.descricao = descricao;
 	}
 
-	public String getPalavraChave() {
-		return palavraChave;
+	public double getPreco() {
+		return preco;
 	}
 
-	public void setPalavraChave(String palavraChave) {
-		this.palavraChave = palavraChave;
+	public void setPreco(double preco) {
+		this.preco = preco;
 	}
 
-	public List<Produto> getProduto() {
-		return produto;
+	public String getMultimidia() {
+		return multimidia;
 	}
 
-	public void setProduto(List<Produto> produto) {
-		this.produto = produto;
+	public void setMultimidia(String multimidia) {
+		this.multimidia = multimidia;
 	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}	
 	
 }

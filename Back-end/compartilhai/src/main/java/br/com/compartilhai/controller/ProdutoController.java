@@ -59,9 +59,15 @@ public class ProdutoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
 	}
 	
-	@PutMapping
-	public ResponseEntity<Produto> put (@RequestBody Produto produto){
-		return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
+	@PutMapping("/{id}")
+	public ResponseEntity<Produto> put (@PathVariable long id, @RequestBody Produto produto){
+		Optional<Produto> produto2 = produtoRepository.findById(id);
+		if(produto2.isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
+		}
+		else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado", null);
+		}
 	}
 	
 	@DeleteMapping("/{id}")

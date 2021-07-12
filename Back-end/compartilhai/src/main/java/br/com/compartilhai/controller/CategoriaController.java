@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.compartilhai.model.Categoria;
+import br.com.compartilhai.model.Produto;
 import br.com.compartilhai.repository.CategoriaRepository;
 
 @RestController
@@ -55,9 +56,15 @@ public class CategoriaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaRepository.save(categoria));
 	}
 	
-	@PutMapping
-	public ResponseEntity<Categoria> put (@RequestBody Categoria categoria){
-		return ResponseEntity.status(HttpStatus.OK).body(categoriaRepository.save(categoria));
+	@PutMapping("/{id}")
+	public ResponseEntity<Categoria> put (@PathVariable long id, @RequestBody Categoria categoria){
+		Optional<Categoria> categoria2 = categoriaRepository.findById(id);
+		if(categoria2.isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK).body(categoriaRepository.save(categoria));
+		}
+		else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado", null);
+		}
 	}
 	
 	@DeleteMapping("/{id}")

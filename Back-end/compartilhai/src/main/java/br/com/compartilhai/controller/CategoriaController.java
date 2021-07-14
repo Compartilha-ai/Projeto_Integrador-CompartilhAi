@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.compartilhai.model.Categoria;
-import br.com.compartilhai.model.Produto;
 import br.com.compartilhai.repository.CategoriaRepository;
 
 @RestController

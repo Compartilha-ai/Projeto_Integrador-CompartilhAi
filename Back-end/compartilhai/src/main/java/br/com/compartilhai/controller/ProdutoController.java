@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.compartilhai.model.Produto;
 import br.com.compartilhai.repository.ProdutoRepository;
+import br.com.compartilhai.service.ProdutoService;
 
 @RestController
 @RequestMapping("/produto")
@@ -27,57 +28,72 @@ public class ProdutoController {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
+
+	@Autowired
+	private ProdutoService produtoService;
+
 	@GetMapping
-	public ResponseEntity<List<Produto>> getAll (){
+	public ResponseEntity<List<Produto>> getAll() {
 		return ResponseEntity.ok(produtoRepository.findAll());
-}
-	
+	}
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Produto> getById (@PathVariable long id){
+	public ResponseEntity<Produto> getById(@PathVariable long id) {
 		return produtoRepository.findById(id).map(resp -> ResponseEntity.ok(resp))
 				.orElse(ResponseEntity.notFound().build());
 	}
-	
+
 	@GetMapping("/nome/{nome}")
-	public ResponseEntity<List<Produto>> getByNome (@PathVariable String nome){
+	public ResponseEntity<List<Produto>> getByNome(@PathVariable String nome) {
 		return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
 	}
-	
-	@GetMapping ("/precomaior/{preco}")
-	public ResponseEntity<List<Produto>> getPrecoMaiorQue (@PathVariable double preco) {
+
+	@GetMapping("/precomaior/{preco}")
+	public ResponseEntity<List<Produto>> getPrecoMaiorQue(@PathVariable double preco) {
 		return ResponseEntity.ok(produtoRepository.findAllByPrecoGreaterThan(preco));
 	}
-		
-	@GetMapping ("/precomenor/{preco}")
-	public ResponseEntity<List<Produto>> getPrecoMenorQue (@PathVariable double preco) {
+
+	@GetMapping("/precomenor/{preco}")
+	public ResponseEntity<List<Produto>> getPrecoMenorQue(@PathVariable double preco) {
 		return ResponseEntity.ok(produtoRepository.findAllByPrecoLessThan(preco));
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Produto> post (@RequestBody Produto produto){
+	public ResponseEntity<Produto> post(@RequestBody Produto produto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<Produto> put (@PathVariable long id, @RequestBody Produto produto){
+	public ResponseEntity<Produto> put(@PathVariable long id, @RequestBody Produto produto) {
 		Optional<Produto> produto2 = produtoRepository.findById(id);
-		if(produto2.isPresent()) {
+		if (produto2.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
-		}
-		else {
+		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado", null);
 		}
 	}
-	
+
+	@PutMapping("/curtir/{id}")
+	public ResponseEntity<Produto> curtirProdutoId(@PathVariable Long id) {
+
+		return ResponseEntity.status(HttpStatus.OK).body(produtoService.curtir(id));
+
+	}
+
+	@PutMapping("/descurtir/{id}")
+	public ResponseEntity<Produto> descurtirProdutoId(@PathVariable Long id) {
+
+		return ResponseEntity.status(HttpStatus.OK).body(produtoService.descurtir(id));
+
+	}
+
 	@DeleteMapping("/{id}")
-	public void delete (@PathVariable long id){
+	public void delete(@PathVariable long id) {
 		Optional<Produto> produto = produtoRepository.findById(id);
-		if(produto.isPresent()) {
+		if (produto.isPresent()) {
 			produtoRepository.deleteById(id);
-		}
-		else {
+		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado", null);
-		}	
+		}
 	}
 }

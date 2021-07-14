@@ -1,6 +1,5 @@
 package br.com.compartilhai.model;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,29 +20,31 @@ public class Produto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	@NotNull
 	@Size(max = 255)
 	private String nome;
-	
+
 	@NotNull
 	@Size(min = 10, max = 255)
 	private String descricao;
-	
+
 	@NotNull
 	@Positive
 	private double preco;
-	
+
 	@NotNull
 	@Size(min = 5, max = 255)
 	private String multimidia;
-	
+
+	@PositiveOrZero
+	int curtidas;
+
 	@ManyToOne
 	@JsonIgnoreProperties("produto")
 	private Categoria categoria;
-	
-	
-    @ManyToOne
+
+	@ManyToOne
 	@JsonIgnoreProperties("produto")
 	private Usuario usuario;
 
@@ -92,9 +94,8 @@ public class Produto {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
-		
-	  }	
 
+	}
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -103,7 +104,13 @@ public class Produto {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
-	
-	
+
+	public int getCurtidas() {
+		return curtidas;
+	}
+
+	public void setCurtidas(int curtidas) {
+		this.curtidas = curtidas;
+	}
+
 }

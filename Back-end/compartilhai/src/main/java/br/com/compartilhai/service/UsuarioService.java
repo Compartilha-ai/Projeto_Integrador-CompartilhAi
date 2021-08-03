@@ -22,7 +22,7 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
+	public Usuario cadastrarUsuario(Usuario usuario) {
 	
 		if(usuarioRepository.findByEmail(usuario.getEmail()).isPresent())
 			throw new ResponseStatusException(
@@ -39,7 +39,7 @@ public class UsuarioService {
 		String senhaEncoder = encoder.encode(usuario.getSenha());
 		usuario.setSenha(senhaEncoder);
 
-		return Optional.of(usuarioRepository.save(usuario));
+		return usuarioRepository.save(usuario);
 	}
 
 	public Optional<Usuario> atualizarUsuario(Usuario usuario){
@@ -81,9 +81,13 @@ public class UsuarioService {
 				byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
 				String authHeader = "Basic " + new String(encodedAuth);
 
-				usuarioLogin.get().setToken(authHeader);				
+				usuarioLogin.get().setToken(authHeader);
+				usuarioLogin.get().setId(usuario.get().getId());
 				usuarioLogin.get().setNomeCompleto(usuario.get().getNomeCompleto());
 				usuarioLogin.get().setSenha(usuario.get().getSenha());
+				usuarioLogin.get().setEmail(usuario.get().getEmail());
+				usuarioLogin.get().setFoto(usuario.get().getFoto());
+				usuarioLogin.get().setTipo(usuario.get().getTipo());
 
 				return usuarioLogin;
 

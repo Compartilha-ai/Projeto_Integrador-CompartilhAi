@@ -63,14 +63,9 @@ public class ProdutoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Produto> put(@PathVariable long id, @RequestBody Produto produto) {
-		Optional<Produto> produto2 = produtoRepository.findById(id);
-		if (produto2.isPresent()) {
-			return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado", null);
-		}
+	@PutMapping
+	public ResponseEntity<Produto> put(@RequestBody Produto produto) {
+		return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
 	}
 
 	@PutMapping("/curtir/{id}")
@@ -82,9 +77,7 @@ public class ProdutoController {
 
 	@PutMapping("/descurtir/{id}")
 	public ResponseEntity<Produto> descurtirProdutoId(@PathVariable Long id) {
-
 		return ResponseEntity.status(HttpStatus.OK).body(produtoService.descurtir(id));
-
 	}
 
 	@DeleteMapping("/{id}")

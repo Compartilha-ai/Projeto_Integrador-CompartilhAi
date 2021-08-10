@@ -2,6 +2,7 @@ package br.com.compartilhai.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,11 +36,18 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/usuarios/{id}").permitAll()
-		.antMatchers("/usuarios/cadastrar").permitAll()
-		.antMatchers("/usuarios/logar").permitAll()
-		.antMatchers("/produto").permitAll()
-		.anyRequest().authenticated()
+		.antMatchers("/**").permitAll() 
+        .antMatchers("/usuarios/logar").permitAll()
+        .antMatchers("/usuarios/cadastrar").permitAll()
+        .antMatchers(HttpMethod.GET, "/produto").permitAll()
+        .antMatchers(HttpMethod.GET, "/categoria").permitAll()
+        .antMatchers(HttpMethod.POST, "/produto").permitAll()
+        .antMatchers(HttpMethod.POST, "/categoria").permitAll()
+        .antMatchers(HttpMethod.PUT, "/produto").permitAll()
+        .antMatchers(HttpMethod.PUT, "/categoria").permitAll()
+        .antMatchers(HttpMethod.DELETE, "/produto").permitAll()
+        .antMatchers(HttpMethod.DELETE, "/categoria").permitAll()
+	    .anyRequest().authenticated()
  		.and().httpBasic()
  		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
  		.and().cors()
